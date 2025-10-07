@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Landing Page — Scrollable</title>
+  <style>
+    :root{--accent:#0066ff;--muted:#666;--bg:#f6f8fb}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#111}
+    header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid #e6e9ef;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-weight:700;font-size:1.1rem;color:var(--accent)}
+    nav a{margin:0 10px;color:var(--muted);text-decoration:none;font-weight:600}
+    .hero{min-height:70vh;display:flex;align-items:center;padding:48px 6%;gap:32px}
+    .hero .left{flex:1}
+    .hero h1{font-size:clamp(1.6rem,3.4vw,3rem);margin:0 0 12px}
+    .hero p{color:var(--muted);margin-bottom:18px}
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .btn{background:var(--accent);color:#fff;padding:12px 18px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+    .hero .right{flex:1}
+    .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:28px 6%}
+    .card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
+    .product-list{padding:24px 6%}
+    .product{display:flex;gap:16px;align-items:center;padding:14px;background:#fff;border-radius:12px;margin-bottom:12px}
+    .product img{width:120px;height:80px;object-fit:cover;border-radius:8px}
+    .product .meta{flex:1}
+    .price{font-weight:800}
+    .cart{display:flex;gap:12px;align-items:center}
+    .cart .count{background:#ff3b30;color:#fff;padding:6px 10px;border-radius:20px;font-weight:700}
+    main section{margin-bottom:28px}
+    .contact{padding:28px 6%}
+    form{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    form .full{grid-column:1/-1}
+    input,textarea,select{padding:12px;border-radius:8px;border:1px solid #dfe6f2;width:100%;font-size:0.95rem}
+    footer{padding:20px 6%;text-align:center;color:var(--muted)}
+    /* responsive */
+    @media(max-width:800px){
+      .hero{flex-direction:column;padding:36px 6%}
+      form{grid-template-columns:1fr}
+      .product img{width:96px;height:64px}
+    }
+    /* modal styles */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(10,10,12,0.45);display:none;align-items:center;justify-content:center;padding:24px}
+    .modal{background:#fff;padding:18px;border-radius:12px;max-width:720px;width:100%;box-shadow:0 20px 50px rgba(8,12,24,0.35)}
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex;gap:18px;align-items:center">
+      <div class="logo">BrandName</div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="cart">
+      <button class="btn ghost" id="viewCartBtn">View Cart</button>
+      <div class="count" id="cartCount">0</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="left">
+        <h1>Beautiful, fast & scrollable landing page</h1>
+        <p>Fully client-side demo landing page with interactive Add to Cart buttons, a purchase flow, and a contact form. Copy this single HTML file and host anywhere.</p>
+        <div class="cta-row">
+          <button class="btn" id="startShopping">Start Shopping</button>
+          <button class="btn ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="card" style="padding:22px">
+          <h3 style="margin:0 0 8px">Limited Time Offer</h3>
+          <p style="margin:0 0 12px;color:var(--muted)">Use code <strong>SAVE20</strong> at checkout for 20% off.</p>
+          <button class="btn" id="buyNowHero">Purchase</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="feature-grid">
+      <div class="card"><h4>Fast</h4><p style="color:var(--muted)">Optimized layout for fast browsing.</p></div>
+      <div class="card"><h4>Responsive</h4><p style="color:var(--muted)">Looks great on mobile and desktop.</p></div>
+      <div class="card"><h4>Simple Checkout</h4><p style="color:var(--muted)">Inline purchase modal for demo flows.</p></div>
+      <div class="card"><h4>Contact Form</h4><p style="color:var(--muted)">Form submission with validation and success feedback.</p></div>
+    </section>
+
+    <section id="products" class="product-list">
+      <h2 style="margin:0 0 12px">Featured Products</h2>
+
+      <!-- product 1 -->
+      <div class="product" data-id="p1" data-name="Classic Tee" data-price="499">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23eaeefb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666' font-size='24'%3EClassic Tee%3C/text%3E%3C/svg%3E" alt="Classic Tee">
+        <div class="meta">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Classic Tee</strong><div class="price">₹499</div></div>
+          <p style="color:var(--muted);margin:8px 0;">Comfortable cotton tee — demo product.</p>
+          <div style="display:flex;gap:8px">
+            <button class="btn add-to-cart">Add to cart</button>
+            <button class="btn ghost quick-buy">Purchase</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- product 2 -->
+      <div class="product" data-id="p2" data-name="Slim Jacket" data-price="1999">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23f9eef7'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666' font-size='24'%3ESlim Jacket%3C/text%3E%3C/svg%3E" alt="Slim Jacket">
+        <div class="meta">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Slim Jacket</strong><div class="price">₹1,999</div></div>
+          <p style="color:var(--muted);margin:8px 0;">Lightweight jacket for everyday wear.</p>
+          <div style="display:flex;gap:8px">
+            <button class="btn add-to-cart">Add to cart</button>
+            <button class="btn ghost quick-buy">Purchase</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- product 3 -->
+      <div class="product" data-id="p3" data-name="Sneaker" data-price="3499">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23eefaf0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666' font-size='24'%3ESneaker%3C/text%3E%3C/svg%3E" alt="Sneaker">
+        <div class="meta">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Sneaker</strong><div class="price">₹3,499</div></div>
+          <p style="color:var(--muted);margin:8px 0;">Daily running sneaker.</p>
+          <div style="display:flex;gap:8px">
+            <button class="btn add-to-cart">Add to cart</button>
+            <button class="btn ghost quick-buy">Purchase</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="contact" class="contact">
+      <h2 style="margin:0 0 12px">Contact / Request Demo</h2>
+      <p style="color:var(--muted);margin-bottom:10px">Send us a message — form includes a submit button that triggers a success message.</p>
+      <form id="contactForm">
+        <input name="first" placeholder="First name" required />
+        <input name="last" placeholder="Last name" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <input name="phone" placeholder="Phone (optional)" />
+        <textarea name="message" rows="4" placeholder="How can we help?" class="full"></textarea>
+        <button type="submit" class="btn full">Submit</button>
+      </form>
+      <div id="formFeedback" style="margin-top:12px;color:green;display:none">Thanks — we received your message.</div>
+    </section>
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> BrandName • Built for demo
+  </footer>
+
+  <!-- modal backdrop -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div id="modalContent"></div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px">
+        <button class="btn ghost" id="closeModal">Close</button>
+        <button class="btn" id="confirmPurchase">Purchase</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // small client-side cart implementation
+    const cart = {items: []};
+    const cartCountEl = document.getElementById('cartCount');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalContent = document.getElementById('modalContent');
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    function updateCartCount(){
+      cartCountEl.textContent = cart.items.reduce((s,i)=>s+i.qty,0);
+    }
+
+    function findProductEl(el){
+      return el.closest('.product');
+    }
+
+    // Add to cart buttons
+    document.querySelectorAll('.add-to-cart').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        const p = findProductEl(e.target);
+        const id = p.dataset.id; const name = p.dataset.name; const price = Number(p.dataset.price);
+        const existing = cart.items.find(x=>x.id===id);
+        if(existing){ existing.qty += 1; } else { cart.items.push({id,name,price,qty:1}); }
+        updateCartCount();
+        // small animated feedback
+        btn.textContent = 'Added ✓';
+        setTimeout(()=>btn.textContent = 'Add to cart',1200);
+      })
+    });
+
+    // Quick buy (purchase single item)
+    document.querySelectorAll('.quick-buy').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        const p = findProductEl(e.target);
+        const id = p.dataset.id; const name = p.dataset.name; const price = Number(p.dataset.price);
+        showModal(`<h3>Buy now — ${name}</h3><p style=\"color:var(--muted)\">Price: ₹${price}</p>`, [{id,name,price,qty:1}]);
+      })
+    });
+
+    // Hero buy button (purchase current cart or alert)
+    document.getElementById('buyNowHero').addEventListener('click',()=>{
+      if(cart.items.length===0){ alert('Your cart is empty. Add items first or use Purchase on a product.'); return; }
+      showModal('<h3>Checkout</h3>', cart.items);
+    });
+
+    // view cart
+    document.getElementById('viewCartBtn').addEventListener('click',()=>{
+      if(cart.items.length===0){ modalContent.innerHTML = '<p>Your cart is empty.</p>'; showModal(null,[]); return; }
+      showModal('<h3>Your cart</h3>', cart.items);
+    });
+
+    function showModal(customHtml, items){
+      if(customHtml){ modalContent.innerHTML = customHtml + renderCartItems(items); }
+      else { modalContent.innerHTML = renderCartItems(items); }
+      modalBackdrop.style.display = 'flex';
+    }
+
+    function renderCartItems(items){
+      if(!items || items.length===0) return '<p style="color:var(--muted)">No items.</p>';
+      let html = '<div style="margin-top:8px">';
+      let total = 0;
+      items.forEach(it=>{ total += it.price*it.qty; html += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #eee"><div>${it.name} x ${it.qty}</div><div>₹${it.price*it.qty}</div></div>` });
+      html += `<div style="display:flex;justify-content:space-between;font-weight:800;padding-top:8px"> <div>Total</div><div>₹${total}</div></div>`;
+      html += '</div>';
+      return html;
+    }
+
+    document.getElementById('closeModal').addEventListener('click',()=>{ modalBackdrop.style.display='none'; });
+
+    // When user confirms purchase
+    document.getElementById('confirmPurchase').addEventListener('click',()=>{
+      // simple demo: clear cart if checkout had items, or simulate single-item purchase
+      const isCart = modalContent.innerHTML.includes('Your cart') || modalContent.innerHTML.includes('Total');
+      modalBackdrop.style.display='none';
+      alert('Thanks! Your purchase was successful (demo).');
+      // clear cart
+      cart.items = [];
+      updateCartCount();
+    });
+
+    // contact form handling
+    const contactForm = document.getElementById('contactForm');
+    const formFeedback = document.getElementById('formFeedback');
+    contactForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = new FormData(contactForm);
+      // simple validation demo
+      if(!data.get('email')){ alert('Please provide your email'); return; }
+      // pretend to send — show success
+      contactForm.reset();
+      formFeedback.style.display = 'block';
+      setTimeout(()=>formFeedback.style.display='none',4000);
+    });
+
+    // start shopping scroll
+    document.getElementById('startShopping').addEventListener('click',()=>{
+      document.getElementById('products').scrollIntoView({behavior:'smooth'});
+    });
+
+    // small keyboard accessibility: close modal on Escape
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') modalBackdrop.style.display='none'; });
+
+    // prefill a little cart demo item on load (comment out if unwanted)
+    // cart.items.push({id:'demo',name:'Welcome Pack',price:149,qty:1}); updateCartCount();
+  </script>
+</body>
+</html>
